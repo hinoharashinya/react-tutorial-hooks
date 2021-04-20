@@ -1,8 +1,12 @@
-import React from 'react';
+import React, {VFC} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-function Square(props) {
+type squareProps = {
+  value: oneSquareType;
+  onClick: () => void;
+}
+const Square: VFC<squareProps> = (props) => {
   return (
     <button className="square" onClick={props.onClick}>
       {props.value}
