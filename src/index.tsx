@@ -1,18 +1,8 @@
 import React, {VFC, useState} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-
-type squareProps = {
-  value: oneSquareType;
-  onClick: () => void;
-}
-const Square: VFC<squareProps> = (props) => {
-  return (
-    <button className="square" onClick={props.onClick}>
-      {props.value}
-    </button>
-  );
-}
+import {Square} from "./components/Square";
+import {oneSquareType} from "./types/oneSquareType";
 
 type boardProps = {
   squares: Array<oneSquareType>;
@@ -49,8 +39,6 @@ const Board: VFC<boardProps> = (props) => {
   );
 
 }
-
-type oneSquareType = "O" | "X" | null;
 
 type historyType = {
   squares: Array<oneSquareType>;
