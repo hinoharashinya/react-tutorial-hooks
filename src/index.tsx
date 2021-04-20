@@ -10,8 +10,12 @@ function Square(props) {
   );
 }
 
-class Board extends React.Component {
-  renderSquare(i) {
+type boardProps = {
+  squares: Array<oneSquareType>;
+  onClick: (i: number) => void;
+}
+class Board extends React.Component<boardProps, {}> {
+  renderSquare(i: number) {
     return (
       <Square
         value={this.props.squares[i]}
