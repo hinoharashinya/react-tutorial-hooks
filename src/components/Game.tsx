@@ -1,56 +1,15 @@
-import React, {VFC, useState} from 'react';
+import React, {VFC} from 'react';
 import {Board} from "./Board";
-import {historyType} from "../types/historyType";
-import {oneSquareType} from "../types/oneSquareType";
-
-function calculateWinner(squares: Array<oneSquareType>) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
-}
+import {useGameControl} from "../hooks/useGameControl";
+import {calculateWinner} from "../utils/calculateWinner";
 
 export const Game: VFC = () =>  {
 
+  const {history, stepNumber, xIsNext, handleClickSquare, jumpToPast} = useGameControl();
 
-  const [history, setHistory] = useState<Array<historyType>>([{squares: Array(9).fill(null)}])
-  const [stepNumber, setStepNumber] = useState<number>(0);
-  const [xIsNext, setXIsNext] = useState<boolean>(true);
+  const handleClick = (i: number) => handleClickSquare(i);
 
-  const handleClick = (i: number) => {
-    const copyedHistory = history.slice(0, stepNumber + 1);
-    const current = history[copyedHistory.length - 1];
-    const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
-      return;
-    }
-    squares[i] = xIsNext ? "X" : "O";
-    setHistory(copyedHistory.concat([
-      {
-        squares: squares
-      }
-    ]));
-    setStepNumber(copyedHistory.length);
-    setXIsNext(!xIsNext);
-  }
-
-  const jumpTo = (step: number) => {
-    setStepNumber(step);
-    setXIsNext((step % 2) === 0);
-  }
+  const jumpTo = (step: number) => jumpToPast(step);
 
   const current = history[stepNumber];
   const winner = calculateWinner(current.squares);
